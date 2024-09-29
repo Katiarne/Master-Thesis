@@ -13,4 +13,4 @@ grep -w "CDS" /mnt/SCRATCH/kristenl/katinka_master/Salmo_salar.Ssal_v3.1.107.chr
 module load BEDTools
 
 #Run BEDTools intersect
-bedtools intersect -wa -wb -a cds_only.gff3 -b /mnt/SCRATCH/kristenl/katinka_master/Ssalv3.1_pangenome_pangenie_all_svs_aquafaang_samples.chr.vcf > intersect_otput
+bedtools intersect -wo -a cds_only.gff3 -b /mnt/SCRATCH/kristenl/katinka_master/Ssalv3.1_pangenome_pangenie_all_svs_aquafaang_samples.chr.vcf > intersect_otput
