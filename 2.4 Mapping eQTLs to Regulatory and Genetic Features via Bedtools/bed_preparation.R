@@ -8,6 +8,13 @@ eQTLs_bed <- results_tpm_sum %>%
   select(-statistic, -FDR, -beta, -position) %>%
   select(chrom, start, everything())
 
+eQTLs_0bp_bed <- results_tpm_sum_0bp %>%
+  mutate(chrom = str_extract(snps, "^[^-]+"),
+         position = as.numeric(str_extract(snps, "[^-]+$"))) %>%
+  mutate(start = position) %>%
+  select(-statistic, -FDR, -beta, -position) %>%
+  select(chrom, start, everything())
+
 # Load vcf file
 vcf_file <- read.delim("/mnt/SCRATCH/kristenl/katinka_master/Ssalv3.1_pangenome_pangenie_all_svs_aquafaang_samples.chr.vcf", 
                        header = FALSE, comment.char = "#", sep = "\t") %>%
@@ -38,12 +45,18 @@ eQTLs <- eQTLs_bed %>%
   select(-V1, -V2) %>%
   select(chrom, start, end, everything())
 
+eQTLs_0bp <- eQTLs_0bp_bed %>%
+  inner_join(vcf_file, by = join_by(snps == SVid) ) %>%
+  mutate(end = ifelse(variant_type == "insertion", start, start+reference_count )) %>%
+  select(-reference_count) %>%
+  mutate(start = start-1) %>%
+  select(-V1, -V2) %>%
+  select(chrom, start, end, everything())
 
 #regulatory elements / unified peaks
 
 unified_peaks <- read_tsv("https://salmobase.org/datafiles/datasets/Aqua-Faang/robust_ATAC_peaks/unified_annotated_peaks/AtlanticSalmon_unified_peaks.bed",
                           col_names = FALSE)
-
 
 # enhancers and CDS 
 
@@ -67,6 +80,7 @@ write_delim(gff, "gff.bed", delim = "\t", col_names = FALSE)
 write_delim(vcf_bed, "vcf.bed", delim = "\t", col_names = FALSE)
 write_delim(unified_peaks, "regions.bed", delim = "\t", col_names = FALSE)
 write_delim(eQTLs, "eQTLs.bed", delim = "\t", col_names = FALSE)
+write_delim(eQTLs_0bp, "eQTLs_0bp.bed", delim = "\t", col_names = FALSE)
 
 # Run bedtools
 #
