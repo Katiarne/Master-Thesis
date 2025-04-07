@@ -3,6 +3,7 @@ library(ggplot2)
 library(ggtext)
 
 # Retain the `tissue` column in cis_results
+results_tissues <- read_csv("eQTL_tissues.csv")
 cis_results <- results_tissues %>%
   mutate(
     chromosome = as.numeric(sub("-.*", "", snps)),
