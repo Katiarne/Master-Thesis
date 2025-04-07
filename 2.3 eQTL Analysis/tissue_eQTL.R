@@ -195,7 +195,7 @@ process_tissue <- function(tissue_name, tissue_url) {
     pvOutputThreshol = 0,
     snpspos = snpspos,
     genepos = genepos,
-    cisDist = 0, #1e4, #10kb
+    cisDist = 1e4, #10kb
     pvalue.hist = TRUE,
     min.pv.by.genesnp = FALSE,
     noFDRsaveMemory = FALSE
