@@ -1,6 +1,4 @@
 ## Regression ###
-library(devtools)
-
 sv_id <- "17-12377744" # enter SV-id you want to look at
 gene_id <- "ENSSSAG00000102446" # enter gene-id you want to look at
 
