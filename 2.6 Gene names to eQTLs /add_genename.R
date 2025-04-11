@@ -8,9 +8,6 @@ gff_data <- read.delim("/mnt/SCRATCH/kristenl/katinka_master/Salmo_salar.Ssal_v3
   select(V1, V4, V5, gene_id, gene_name) %>%
   mutate(V4 = V4-1)
 
-gff <- read.delim("/mnt/SCRATCH/kristenl/katinka_master/Salmo_salar.Ssal_v3.1.107.chr.gff3", 
-                  header = FALSE, comment.char = "#", sep = "\t")
-
 eQTL_gene <- results_tpm_sum %>%
   mutate(chrom = str_extract(snps, "^[^-]+"),
          position = as.numeric(str_extract(snps, "[^-]+$"))) %>%
