@@ -1,4 +1,6 @@
 # bed file med gene navn
+library(tidyverse)
+
 gff_data <- read.delim("/mnt/SCRATCH/kristenl/katinka_master/Salmo_salar.Ssal_v3.1.107.chr.gff3", 
                        header = FALSE, comment.char = "#", sep = "\t") %>%
   select(-V2, -V3, -V6:-V8) %>%
