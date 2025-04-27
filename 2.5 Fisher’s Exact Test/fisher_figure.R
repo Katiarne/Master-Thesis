@@ -1,7 +1,7 @@
 ### Plot fishers exact test #####
 library(ggplot2)
 
-label <- c("Short vs Long SVs", "Deletion vs. Insertion", "ATAC", "TSS", "Enhancer",
+label <- c("Short vs Long SVs", "Deletion vs. Insertion", "ATAC", "Active TSS", "Enhancer",
            "CDS", "UTR")
 
 conf_int <- c(fisher_result$conf.int,fisher_result_type$conf.int, fisher_result_bio$conf.int,
@@ -18,7 +18,7 @@ number_eQTL <- c(contingency_table["short", "YES"],tabel_type["YES", "deletion"]
 denominator <- c(rep(10434, 5), rep(6955, 2)) 
 percent_eQTL <- round((number_eQTL / denominator) * 100, 2)
 
-fig_lab <- c("Short SVs", "Deletions", "ATAC", "TSS", "Enhancers", "CDS", "UTR")
+fig_lab <- c("Short SVs", "Deletions", "ATAC", "Active TSS", "Enhancers", "CDS", "UTR")
 
 conf_matrix <- matrix(conf_int, ncol = 2, byrow = TRUE)
 lower <- conf_matrix[, 1]
@@ -33,12 +33,14 @@ fp <- ggplot(data=df, aes(x=label, y=odds_ratio, ymin=lower, ymax=upper)) +
   geom_hline(yintercept=1, lty=2) + 
   coord_flip() +  
   xlab("") + ylab("odds-ratio (95% confidence interval)") +
-  ggtitle("Enrichment of eQTL-Associated SVs Across Genomic and Regulatory Features") +
+  ggtitle("Enrichment of eQTL-Associated SVs\nAcross Genomic and Regulatory Features") +  # Split title here
   theme_bw() +
   theme(
-    plot.title = element_text(size = 14, face = "bold")  # Make title bold and centered
+    plot.title = element_text(size = 12, face = "bold", hjust = 0),  
+    plot.margin = margin(10, 10, 20, 10) 
   ) +
   geom_text(aes(label = paste0(percent_eQTL, "% ", fig_lab), 
                 y = upper + 0.2), hjust = 0, size = 3) +  
   ylim(min(lower) * 0.8, max(upper) * 1.5)
+
 print(fp)
